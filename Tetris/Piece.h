@@ -1,6 +1,5 @@
 #pragma once
 #define MAX_SHAPE_SIZE 4
-
 class CPiece
 {
 public:
@@ -8,13 +7,37 @@ public:
 	~CPiece(void);
 
 	// return false if the piece had a collision and has to be stopped.
- 	bool Update(DWORD deltaTime);
+	bool Update(DWORD deltaTime);
 	void Move(int DX, int DY);
 	void Rotate();
-	void Display(HDC hdc);
+	void Display(HDC hdc) const noexcept;
 	int GetShape(int c, int l);
 	int GetPosX() { return m_X; }
 	int GetPosY() { return m_Y; }
+
+	//move constructor
+	/*CPiece(CPiece&& other) noexcept
+		: m_availableRotation(std::move(other.m_availableRotation)),
+		m_currentRotation(other.m_currentRotation),
+		m_X(other.m_X),
+		m_Y(other.m_Y),
+		m_fY(other.m_fY)
+	{
+
+	}
+	CPiece& operator=(CPiece&& other) noexcept
+	{
+		if (this != &other)
+		{
+			m_availableRotation = std::move(other.m_availableRotation);
+			m_currentRotation = other.m_currentRotation;
+			m_X = other.m_X;
+			m_Y = other.m_Y;
+			m_fY = other.m_fY;
+		}
+
+		return *this;
+	}*/
 
 protected:
 	bool CollisionTest(int DX, int DY, int Rotation);
@@ -23,15 +46,15 @@ protected:
 	{
 		SShapeDefinition() { Reset(); }
 
-		bool AddLine(int c1,int c2, int c3, int c4);
-		bool IsValid() const	{ return m_lineCount == MAX_SHAPE_SIZE; }
-		void Reset()	{ m_lineCount = 0; }
+		bool AddLine(int c1, int c2, int c3, int c4);
+		bool IsValid() const { return m_lineCount == MAX_SHAPE_SIZE; }
+		void Reset() { m_lineCount = 0; }
 
 		int m_lineCount;
 		int m_lines[MAX_SHAPE_SIZE][MAX_SHAPE_SIZE];
 	};
 
-	bool AddAvailableRotation(const SShapeDefinition & shapeDefinition); //QUESTION : why did we use a 'const &' here instead of simply AddAvailableRotation(SShapeDefinition shapeDefinition)
+	bool AddAvailableRotation(const SShapeDefinition& shapeDefinition); //QUESTION : why did we use a 'const &' here instead of simply AddAvailableRotation(SShapeDefinition shapeDefinition)
 
 	std::vector<SShapeDefinition> m_availableRotation;
 
@@ -41,5 +64,8 @@ protected:
 	int m_Y; // In Square unit
 
 	float m_fY;
+public:
+	const SShapeDefinition& GetCurrentRotation() const noexcept;
+
 };
 

@@ -1,4 +1,6 @@
 #pragma once
+#include "Piece.h"
+
 class CPiece;
 class CBoard;
 enum eInput {
@@ -11,6 +13,8 @@ enum eInput {
 class CGameManager
 {
 public:
+	static constexpr int InvalidPiece = -1;
+
 	CGameManager(void);
 	~CGameManager(void);
 
@@ -19,8 +23,10 @@ public:
 	void Display(HDC hdc);
 	static void Create() { m_Instance = new CGameManager(); }
 	static CGameManager* GetInstance() { return m_Instance; }
-	bool TestCollision(int X, int Y);
 
+	CPiece* GetCurrentPiece();
+	bool TestCollision(int X, int Y);
+	bool TestCollisionPieces(int X, int Y);
 	void StartRecording();
 	void StopRecording();
 	void Replay();
@@ -29,7 +35,10 @@ private:
 	void AddPiece();
 	void RemovePiece();
 
-	CPiece* m_currentPiece;
+	std::vector<CPiece> pool; // active pieces
+	std::queue<CPiece> queue; // destroyed piece to recycle
+
+	int	m_currentPiece; //avoid ptr how we are using vector and it may reallocate
 	CBoard* m_Board;
 
 	static CGameManager* m_Instance;

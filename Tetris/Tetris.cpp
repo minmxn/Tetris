@@ -40,11 +40,11 @@ VOID CALLBACK loopEngine(HWND hwnd,
 		DWORD deltaTime = millisecond - g_PreviousTime;
 		if (CGameManager::GetInstance()->Update(deltaTime))
 		{
-			RECT* R = new RECT();
-			R->left = 0;
-			R->right = 400;
-			R->top = 0;
-			R->bottom = 600;
+			RECT R =  RECT();
+			R.left = 0;
+			R.right = 400;
+			R.top = 0;
+			R.bottom = 600;
 			InvalidateRect(hwnd, NULL, true);
 		}
 		g_PreviousTime = millisecond;
@@ -57,6 +57,12 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
                      LPTSTR    lpCmdLine,
                      int       nCmdShow)
 {
+
+//#define _CRTDBG_MAP_ALLOC
+//#include <stdlib.h>
+//#include <crtdbg.h>
+//	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+//	_CrtSetBreakAlloc(240);
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 

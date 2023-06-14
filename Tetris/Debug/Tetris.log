@@ -1,0 +1,9 @@
+﻿  stdafx.cpp
+  Board.cpp
+  DisplayService.cpp
+  GameManager.cpp
+  Piece.cpp
+  SquarePiece.cpp
+  Tetris.cpp
+  Generating Code...
+  Tetris.vcxproj -> C:\Users\min_m\Desktop\Ubisoft\Debug\Tetris.exe

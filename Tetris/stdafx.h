@@ -17,6 +17,6 @@
 #include <memory.h>
 #include <tchar.h>
 #include <vector>
-
+#include <queue>
 
 // TODO: reference additional headers your program requires here

@@ -3,8 +3,12 @@
 #include "DisplayService.h"
 #include "GameManager.h"
 
+const CPiece::SShapeDefinition& CPiece::GetCurrentRotation() const noexcept
+{
+	return m_availableRotation[m_currentRotation];
+}
 
-CPiece::CPiece(void)
+CPiece::CPiece()
 {
 	m_X = 0;
 	m_Y = 0;
@@ -23,7 +27,7 @@ CPiece::CPiece(void)
 }
 
 
-CPiece::~CPiece(void)
+CPiece::~CPiece()
 {
 }
 
@@ -40,7 +44,7 @@ int CPiece::GetShape(int c, int l)
 	return 0;
 }
 
-void CPiece::Display(HDC hdc)
+void CPiece::Display(HDC hdc) const noexcept
 {
 	if (!m_availableRotation.empty())
 	{
@@ -89,7 +93,12 @@ bool CPiece::CollisionTest(int DX, int DY, int Rotation)
 				{
 					if (m_availableRotation[Rotation].m_lines[l][c] != 0)
 					{
+						//this test for board collision
 						if (CGameManager::GetInstance()->TestCollision(m_X + c + DX, m_Y + l + DY))
+							return true;
+
+						//this test for piece to piece collision
+						if (CGameManager::GetInstance()->TestCollisionPieces(m_X + c + DX, m_Y + l + DY))
 							return true;
 					}
 				}
